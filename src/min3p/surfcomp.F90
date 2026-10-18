@@ -107,7 +107,7 @@
 !c           maxit_lc           = max. number of iterations           + -
 !c                                (local chemistry)
 !c           nc                 = number of components including h2o  + -
-!c           nopu               = number of primary unknowns          + -
+!c           n                  = number of primary unknowns          + -
 !c           nsb                = number of sorbed species            + -
 !c           nsb_ion            = number of sorbed species            + -
 !c                                (ion-exchange)
@@ -232,7 +232,7 @@
               !alc_bk(1:nc-1,1:nc-1) = alc(1:nc-1,1:nc-1,tid)
               !blc_bk(1:nc-1) = blc(1:nc-1,tid)
               
-              call simq(alc(1:nc-1,1:nc-1,tid),blc(1:nc-1,tid),nopu,nc-1)  
+              call simq(alc(1:nc-1,1:nc-1,tid),blc(1:nc-1,tid),n,nc-1)  
 
               !rnorm = math_common_linear_norm(nc-1,alc_bk,blc_bk,blc(:,tid))             
 

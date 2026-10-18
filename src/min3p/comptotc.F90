@@ -44,7 +44,7 @@
 !c                                stoichiometric coefficients in
 !c                                redox reaction
 !c           nc                 = number of components including h2o  + -
-!c           nopu               = number of primary unknowns          + -
+!c           n                  = number of primary unknowns          + -
 !c           nr                 = number of redox couples             + -
 !c
 !c
@@ -86,7 +86,7 @@
 !c  skip h2o, since not a primary unknown
  
           if (namec(ic).ne.'h2o') then
-            totc(ic) = totc(ic)+xnur(i)*totc(ir+nopu)
+            totc(ic) = totc(ic)+xnur(i)*totc(ir+n)
           end if
         end do
       end do

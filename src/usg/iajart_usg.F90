@@ -115,7 +115,7 @@
       use parm
       use gen
       use geometry
-      use chem, only : ng
+      use chem, only : n, ng
       use usg_mesh_data, only : num_cells, num_nodes,                  &
                                 num_nodes_per_cell,                    &
                                 num_edge_maxcells, num_edge_dvols,     &

@@ -35,6 +35,8 @@ module gradient_usg
 
   use gen
 
+  use chem, only : n
+
   implicit none
 
   !>

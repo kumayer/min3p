@@ -4241,7 +4241,15 @@
 !cprovi Store the derivative of charge balance on the surface with respect to 
 !cprovi primary species. All species affects the charge balance on the surface.
 !cprovi---------------------------------------------------------------------------
-                art(i2) = art(i2) + cnew(jbl,ivol)*dtotcharge_surf(ibl,tid)               
+                art(i2) = art(i2) + cnew(jbl,ivol)*dtotcharge_surf(ibl,tid)
+
+                !c to avoid numerical issue, put 1 on diagonal for component type 'electro' 
+                !c when the derivative and rhs are zero
+                if (ibl.eq.jbl) then
+                  if (art(i2).eq.r0 .and. brt((ivol-1)*n+ibl).eq.r0) then
+                    art(i2) = r1
+                  end if                  
+                end if
               else if (component_type(ibl).eq.'aqueous') then
                 art(i2) = art(i2) + cnew(jbl,ivol) * dcstor           &
      &                            + cnew(jbl,ivol) * dtotcflux(ibl)

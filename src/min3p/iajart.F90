@@ -141,6 +141,7 @@
  
       use parm
       use gen
+      use chem, only : n
 #ifdef PETSC
       use petsc_mpi_common, only : petsc_mpi_finalize
 #endif

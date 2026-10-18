@@ -61,18 +61,18 @@
       use gen, only : ngb_vol_ijface_jtemp, xg, yg, zg, nfloatbit,            &
                       delt, realbuffer_gb, ngb_vol_ijface_area,               &
                       ifrt, offset_ifrt, offset_ifrt_ijk,                     &
-                      ifga, offset_ifga, offset_ifga_ijk,                        &
-                      ngb_vol_ijface_velratio, time_io, n, delt,              &
+                      ifga, offset_ifga, offset_ifga_ijk,                     &
+                      ngb_vol_ijface_velratio, time_io,  delt,                &
                       mtime, mtime_append, i_append_sim, time_io_rs,          &
                       ifrt_vx_adv_accu,ifrt_vy_adv_accu,ifrt_vz_adv_accu,     &
                       ifrt_vx_dif_accu,ifrt_vy_dif_accu,ifrt_vz_dif_accu,     &
                       ifrt_vx_mig_accu,ifrt_vy_mig_accu,ifrt_vz_mig_accu,     &
                       ifrt_vx_tot_accu,ifrt_vy_tot_accu,ifrt_vz_tot_accu,     &
-                      ifga_vx_adv_accu,ifga_vy_adv_accu,ifga_vz_adv_accu,        &
-                      ifga_vx_dif_accu,ifga_vy_dif_accu,ifga_vz_dif_accu,        &
-                      ifga_vx_tot_accu,ifga_vy_tot_accu,ifga_vz_tot_accu,        &
-                      ifga_vx_dgm_accu,ifga_vy_dgm_accu,ifga_vz_dgm_accu,        &
-                      ifga_vx_neq_accu,ifga_vy_neq_accu,ifga_vz_neq_accu,        &
+                      ifga_vx_adv_accu,ifga_vy_adv_accu,ifga_vz_adv_accu,     &
+                      ifga_vx_dif_accu,ifga_vy_dif_accu,ifga_vz_dif_accu,     &
+                      ifga_vx_tot_accu,ifga_vy_tot_accu,ifga_vz_tot_accu,     &
+                      ifga_vx_dgm_accu,ifga_vy_dgm_accu,ifga_vz_dgm_accu,     &
+                      ifga_vx_neq_accu,ifga_vy_neq_accu,ifga_vz_neq_accu,     &
                       ascii_fmt, cnew, cxnew, totcnew, cinfrt_va, cinfrt_da,  &
                       cinfvs_a, pornew, sanew, type_averaging_De,             &
                       gmfrac, totgnew, gnew, gij, gacc, gmfracij, totgij,     &

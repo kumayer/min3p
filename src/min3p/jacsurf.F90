@@ -141,7 +141,7 @@
 !c                                stoichiometric coefficients of
 !c                                components in sorbed species
 !c           nc                 = number of components including h2o  + -
-!c           nopu               = number of primary unknowns          + -
+!c           n                  = number of primary unknowns          + -
 !c           nr                 = number of redox couples             + -
 !c           nsb                = number of sorbed species            + -
 !c           nsb_ion            = number of sorbed species            + -
@@ -219,7 +219,7 @@
 !c  compute concentrations of sorbed species
       do isb = 1, nsb_ion
         call sorbspc(csb_ion(isb,tid),dummy,                           &
-             cnew(nopu-nelect+1:nopu),cec(tid),                        &
+             cnew(n-nelect+1:n),cec(tid),                        &
              eqsb_ion(:,tid),eqsb_surf(:,tid),gammac,cnew,             &
              xnusb_ion,xnusb_surf,iasb_ion,iasb_surf,jasb_ion,         &
              jasb_surf,nsb_ion,nsb_surf,isb,0,sorption_type_ion,       &
@@ -232,7 +232,7 @@
 !c  compute concentrations of sorbed species
       do isb = 1, nsb_surf
         call sorbspc(dummy,csb_surf(isb,tid),                          &
-             cnew(nopu-nelect+1:nopu),cec(tid),                        &
+             cnew(n-nelect+1:n),cec(tid),                        &
              eqsb_ion(:,tid),eqsb_surf(:,tid),gammac,cnew,             &
              xnusb_ion,xnusb_surf,iasb_ion,iasb_surf,jasb_ion,         &
              jasb_surf,nsb_ion,nsb_surf,0,isb,sorption_type_ion,       &
@@ -247,8 +247,8 @@
 !cprovi carried out
 !cprovi-------------------------------------------------------------------------
         if (elect_correction) then
-          call totchargesorb(totcharge_surf(nopu-nelect+1:nopu,tid),   &
-                  strion,cnew(nopu-nelect+1:nopu),csb_surf(:,tid),     &
+          call totchargesorb(totcharge_surf(n-nelect+1:n,tid),   &
+                  strion,cnew(n-nelect+1:n),csb_surf(:,tid),     &
                   charge_surf,nsb_surf,tempks,area,cap_surf,           &
                   name_elect_correction,nlayer,nelect,ncap)
         end if 
@@ -276,7 +276,7 @@
  
 !c  construct right hand side vector
 
-      do ibl = 1,nopu               !loop over rows
+      do ibl = 1,n               !loop over rows
  
         if (component_type(ibl).eq.'surface') then
 
@@ -306,11 +306,11 @@
 !c  construct jacobian matrix
 !c  assign current component species concentrations to work array
  
-      do ic = 1,nopu
+      do ic = 1,n
         cinc(ic,tid) = cnew(ic)
       end do
 
-      do jbl = 1,nopu                 !loop over columns
+      do jbl = 1,n                 !loop over columns
 
 !c  compute increment for numerical differentiation
 
@@ -324,7 +324,7 @@
 !c  species concentrations 
         do isb = 1,nsb_ion
           call sorbspc(dcsb_ion(isb,tid),dummy,                       &
-                       cinc(nopu-nelect+1:nopu,tid),                  &
+                       cinc(n-nelect+1:n,tid),                  &
                        cec(tid),eqsb_ion(:,tid),eqsb_surf(:,tid),     &
                        gammac,cinc(:,tid),                            &
                        xnusb_ion,xnusb_surf,iasb_ion,iasb_surf,       &
@@ -342,7 +342,7 @@
 !c  species concentrations 
         do isb = 1,nsb_surf
           call sorbspc(dummy,dcsb_surf(isb,tid),                      &
-               cinc(nopu-nelect+1:nopu,tid),                          &
+               cinc(n-nelect+1:n,tid),                          &
                cec(tid),eqsb_ion(:,tid),eqsb_surf(:,tid),             &
                gammac,cinc(:,tid),                                    &
                xnusb_ion,xnusb_surf,iasb_ion,iasb_surf,jasb_ion,      &
@@ -357,14 +357,14 @@
 !cprovi----------------------------------------------------------------------------------
 !cprovi----------------------------------------------------------------------------------
         if (elect_correction) then   
-          call totchargesorb(dtotcharge_surf(nopu-nelect+1:nopu,tid),  &
-                  strion,cinc(nopu-nelect+1:nopu,tid),                 &
+          call totchargesorb(dtotcharge_surf(n-nelect+1:n,tid),  &
+                  strion,cinc(n-nelect+1:n,tid),                 &
                   dcsb_surf(:,tid),charge_surf,nsb_surf,tempks,area,   &
                   cap_surf,name_elect_correction,nlayer,nelect,ncap)
           do ielect = 1,nelect
-              dtotcharge_surf(nopu-nelect+ielect,tid)=                 &
-                (dtotcharge_surf(nopu-nelect+ielect,tid)-              &
-                 totcharge_surf(nopu-nelect+ielect,tid))/drtinc
+              dtotcharge_surf(n-nelect+ielect,tid)=                 &
+                (dtotcharge_surf(n-nelect+ielect,tid)-              &
+                 totcharge_surf(n-nelect+ielect,tid))/drtinc
           end do
         end if  
 !cprovi----------------------------------------------------------------------------------
@@ -397,7 +397,7 @@
  
 !c  contruct current column of jacobian matrix
  
-        do ibl = 1,nopu            !loop over rows
+        do ibl = 1,n            !loop over rows
 
 !c  allocate entry in jacobian matrix
  
@@ -437,6 +437,14 @@
           else if (component_type(ibl).eq.'electro') then 
             if (component_type(jbl)=='electro'.or.component_type(jbl)=='surface') then
               alc(ibl,jbl,tid) = cnew(jbl)*sw*por*dtotcharge_surf(ibl,tid)
+
+              !c to avoid numerical issue, put 1 on diagonal for component type 'electro' 
+              !c when the derivative and rhs are zero
+              if (ibl.eq.jbl) then
+                if (alc(ibl,jbl,tid).eq.r0 .and. blc(ibl,tid).eq.r0) then
+                  alc(ibl,jbl,tid) = r1
+                end if
+              end if
             else 
               alc(ibl,jbl,tid) = r0
             end if 
@@ -460,7 +468,7 @@
 
       if (info_debug.gt.0) then
         write(*,*)
-        do ibl = 1,nopu
+        do ibl = 1,n
           write(*,'(a,1x,15(1pe15.6e3))') trim(namec(ibl)),           &
      &                               (alc(ibl,jbl,tid),jbl=1,nc-1),   &
      &                                blc(ibl,tid)

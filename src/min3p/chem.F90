@@ -61,19 +61,21 @@
 !c           naq                = number of intra-aqueous kinetic 
 !c                                reactions
 !c           nc                 = number of components including h2o
+!c           n                  = number of components excluding h2o 
+!c                                equals number of unknowns per 
+!c                                control volume
+!c           nm                 = number of minerals
+!c           nmx                = number of excluded minerals
+!c           nr                 = number of redox couples
+!c           nx                 = number of secondary aqueous species
 !c           nbio               = number of biomass components
 !c           na                 = number of aqueous components
 !c           nna                = number of non-aqueous components
-!c           ncorder(nc)        = ordering array for components
-!c                                ncorder(old order) = new order 
 !c           ng                 = number of gases
 !c           nph_steps          = number of pH-steps for pH-sweep 
 !c                                calculations
-!c           nm                 = number of minerals
-!c           nmx                = number of excluded minerals
-!c           nopu               = number of primary unknowns
-!c           nr                 = number of redox couples
-!c           nx                 = number of secondary aqueous species
+!c           ncorder(nc)        = ordering array for components
+!c                                ncorder(old order) = new order 
 !c           maxit_lc           = max. number of iterations
 !c                                (local chemistry)
 !c           idetail_lc
@@ -247,7 +249,7 @@
       integer (type_i4) :: nx
       integer (type_i4) :: nm
       integer (type_i4) :: nmx
-      integer (type_i4) :: nopu
+      integer (type_i4) :: n
       integer (type_i4) :: ng
       integer (type_i4) :: nr
       integer (type_i4) :: nph_steps

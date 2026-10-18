@@ -332,7 +332,7 @@
       character*72 name, name_irm, nametemp, nametemp1
 
       real*8, parameter :: r0 = 0.0d0, r_1 = 0.1d0, r1 = 1.0d0,        &
-                           r1000 = 1.0d+3, tiny = 1.0e-3,              &
+                           r1000 = 1.0d+3, rd_3 = 1.0e-3,              &
                            rd_30 = 1.0d-30      
       
 #ifdef OPENMP
@@ -824,6 +824,11 @@
               read(icnv,*,err=999,end=999) name,sitemass,sitearea,    &
                                           sitedens
 
+              !c  make sure the site mass is not too small to avoid zero concentration in concentration
+              if (sitemass.lt.rd_30) then
+                sitemass = rd_30
+              end if
+
               call makelowercase(name)
 
               site_mass_tmp(isites) = sitemass * sitearea * sitedens  &
@@ -906,7 +911,7 @@
                     cec_frc_total= cec_frc_total + cec_fraction(isb)
                   end do
                   
-                  if (abs(cec_frc_total-1.0) > tiny) then
+                  if (abs(cec_frc_total-1.0) > rd_3) then
                       if (rank == 0 .and. b_enable_output) then
                         write(ilog,*) 'Warning: total amount of the CEC fractions of multisite ion-exchange is ', cec_frc_total
                         write(ilog,*) 'Expected value should be 1.0 (= 100.0%)!'
@@ -943,6 +948,12 @@
               ierrcd = 20
               read(icnv,*,err=999,end=999) name,sitemass,sitearea,    &
                                           sitedens
+
+              !c  make sure the site mass is not too small to avoid zero concentration in concentration
+              if (sitemass.lt.rd_30) then
+                sitemass = rd_30
+              end if
+
               site_mass_tmp(isites) = sitemass * sitearea * sitedens  &
                                      * 1.0d+18 / avog_const
                                      

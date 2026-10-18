@@ -61,7 +61,7 @@
 !c           nc                 = number of components excluding h2o  + -
 !c                                equals number of unknowns per
 !c                                control volume
-!c           nopu               = number of primary unknowns          + -
+!c           n                  = number of primary unknowns          + -
 !c
 !c           logical:
 !c           --------
@@ -134,7 +134,7 @@
   
       ulcmax = r0
 
-      do ic = 1,nopu              !loop over primary unknowns
+      do ic = 1,n              !loop over primary unknowns
   
 !c  user specified underrelaxation
 
@@ -213,7 +213,7 @@
       info_debug = 0
       if (info_debug.gt.0) then
         write(*,*)
-        do ic = 1,nopu
+        do ic = 1,n
           write(*,*) trim(namec(ic))," ", ulc(ic)
         end do
         write(*,*)

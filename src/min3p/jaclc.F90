@@ -222,7 +222,7 @@
 !c                                reactions
 !c           nc                 = number of components including h2o  + -
 !c           nm                 = number of minerals                  + -
-!c           nopu               = number of primary unknowns          + -
+!c           n                  = number of primary unknowns          + -
 !c           nsb                = number of sorbed species            + -
 !c           nsb_ion            = number of sorbed species            + -
 !c                                (ion-exchange)
@@ -427,7 +427,7 @@
 
         if (redox_equil.and.nr.gt.0) then
           do ir=1,nr
-            ic = nopu+ir
+            ic = n+ir
             call secspec(cnew,cnew(ic),eqr(ir,tid),gammac,gammac(ic), &
                          xnur,iarc,jarc,ir)
           end do
@@ -486,7 +486,7 @@
           
           do isb = 1,nsb_ion 
               call sorbspc(csb_ion(isb,tid),dummy,                    &
-              cnew(nopu-nelect+1:nopu),cec(tid),                      &
+              cnew(n-nelect+1:n),cec(tid),                      &
               eqsb_ion(:,tid),eqsb_surf(:,tid),gammac,cnew,           &
               xnusb_ion,xnusb_surf,iasb_ion,iasb_surf,jasb_ion,       &
               jasb_surf,nsb_ion,nsb_surf,isb,0,sorption_type_ion,     &
@@ -521,7 +521,7 @@
 !c compute the sorbed concentrations           
         do isb = 1,nsb_surf 
             call sorbspc(dummy,csb_surf(isb,tid),                      &
-                 cnew(nopu-nelect+1:nopu),cec(tid),                    &
+                 cnew(n-nelect+1:n),cec(tid),                    &
                  eqsb_ion(:,tid),eqsb_surf(:,tid),gammac,cnew,         &
                  xnusb_ion,xnusb_surf,iasb_ion,iasb_surf,jasb_ion,     &
                  jasb_surf,nsb_ion,nsb_surf,0,isb,sorption_type_ion,   &
@@ -536,9 +536,9 @@
 !cprovi-------------------------------------------------------------------------
         if (elect_correction) then
             call ionstr(cnew,cxnew,strion,chargec,chargex,nc-1,nx,namec)
-            call totchargesorb(totcharge_surf(i1+1:nopu,tid),strion,       &
-                    cnew(nopu-nelect+1:nopu),csb_surf(:,tid),charge_surf,  &
-                    nsb_surf,tempks,area,cap_surf,name_elect_correction,   &
+            call totchargesorb(totcharge_surf(i1+1:n,tid),strion,       &
+                    cnew(n-nelect+1:n),csb_surf(:,tid),charge_surf,     &
+                    nsb_surf,tempks,area,cap_surf,name_elect_correction,&
                     nlayer,nelect,ncap)
         end if 
 !cprovi-------------------------------------------------------------------------
@@ -690,7 +690,7 @@
 !cprovi-----------------------------------------------------------------------
 !c  put 0 on rhs, if free species concentration is fixed
  
-      do ibl = 1,nopu               !loop over rows
+      do ibl = 1,n                  !loop over rows
 
         if (ctype(ibl).ne.'fixed') then
 !c----------------------------------------------------------------------
@@ -759,7 +759,7 @@
         cinc(ic,tid) = cnew(ic)
       end do
  
-      do jbl = 1,nopu                 !loop over columns
+      do jbl = 1,n                  !loop over columns
 
 !c  compute increment for numerical differentiation
 
@@ -775,7 +775,7 @@
 
         if (redox_equil.and.nr.gt.0) then
           do ir=1,nr
-            ic = nopu+ir
+            ic = n+ir
             call secspec(cinc(:,tid),cinc(ic,tid),eqr(ir,tid),gammac, &
                  gammac(ic),xnur,iarc,jarc,ir)
           end do
@@ -811,7 +811,7 @@
 
           do isb = 1,nsb_ion
             call sorbspc(dcsb_ion(isb,tid),dummy,                     &
-                         cnew(nopu-nelect+1:nopu),cec(tid),           &
+                         cnew(n-nelect+1:n),cec(tid),           &
                          eqsb_ion(:,tid),eqsb_surf(:,tid),            &
                          gammac,cinc(:,tid),                          &
                          xnusb_ion,xnusb_surf,                        &
@@ -852,7 +852,7 @@
         if (nsb_surf.gt.0 .and. explicit_surface_surf) then
           do isb = 1,nsb_surf
             call sorbspc(dummy,dcsb_surf(isb,tid),                    &
-                         cinc(nopu-nelect+1:nopu,tid),cec(tid),       &
+                         cinc(n-nelect+1:n,tid),cec(tid),       &
                          eqsb_ion(:,tid),eqsb_surf(:,tid),            &
                          gammac,cinc(:,tid),                          &
                          xnusb_ion,xnusb_surf,                        &
@@ -871,15 +871,15 @@
           if (elect_correction) then          
             call ionstr(cinc(:,tid),cxinc(:,tid),strioninc,chargec,chargex,    &
                         nc-1,nx,namec)
-            call totchargesorb(dtotcharge_surf(nopu-nelect+1:nopu,tid),        &
-                               strioninc,cinc(nopu-nelect+1:nopu,tid),         &
+            call totchargesorb(dtotcharge_surf(n-nelect+1:n,tid),              &
+                               strioninc,cinc(n-nelect+1:n,tid),               &
                                dcsb_surf(:,tid),charge_surf,nsb_surf,          &
                                tempks,area,cap_surf,name_elect_correction,     &
                                nlayer,nelect,ncap)         
             do ielect=1,nelect    
-              dtotcharge_surf(nopu-nelect+ielect,tid)=                         &
-                             (dtotcharge_surf(nopu-nelect+ielect,tid)-         &
-                              totcharge_surf(nopu-nelect+ielect,tid))/drtinc
+              dtotcharge_surf(n-nelect+ielect,tid)=                         &
+                             (dtotcharge_surf(n-nelect+ielect,tid)-         &
+                              totcharge_surf(n-nelect+ielect,tid))/drtinc
             end do
           end if  
 !cprovi----------------------------------------------------------------------------------
@@ -1042,7 +1042,7 @@
  
 !c  contruct current column of jacobian matrix
  
-        do ibl = 1,nopu             !loop over rows
+        do ibl = 1,n             !loop over rows
 
 !c  allocate entry in jacobian matrix
  
@@ -1109,6 +1109,14 @@
           if (component_type(ibl)=='electro') then
             if (explicit_surface_surf) then   
               alc(ibl,jbl,tid) =  cnew(jbl)*sw*por*dtotcharge_surf(ibl,tid)
+              
+              !c to avoid numerical issue, put 1 on diagonal for component type 'electro' 
+              !c when the derivative and rhs are zero
+              if (ibl.eq.jbl) then
+                if (alc(ibl,jbl,tid).eq.r0 .and. blc(ibl,tid).eq.r0) then
+                  alc(ibl,jbl,tid) = r1
+                end if
+              end if
             else     
               if (ibl.eq.jbl) then
                 alc(ibl,jbl,tid) = r1
@@ -1134,7 +1142,7 @@
       info_debug = 0
       if (info_debug.gt.0) then
         write(*,*)
-        do ibl=1,nopu
+        do ibl=1,n
           write(*,'(a,1x,15(1pe15.6e3))') trim(namec(ibl)),           &
      &                               (alc(ibl,jbl,tid),jbl=1,nc-1),   &
      &                                blc(ibl,tid)

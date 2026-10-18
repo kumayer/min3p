@@ -354,11 +354,11 @@ contains
       use phys, only : dens_h2o 
       use gen,  only : ilog, idat, itmp, igen, rank, time_factor,      &
                        b_enable_output,  b_enable_output_gen,          &
-                       gacc, nvxgl, nvygl, nvzgl, uvsnew, zg, n,       &
+                       gacc, nvxgl, nvygl, nvzgl, uvsnew, zg,          &
                        zlmaxgbl, zlmingbl, numofthreads_mip_bubble,    &
                        memory_monitor
       
-      use chem, only : ng, nx, nameg, tempk, rgasjoule, pa_atm, rgasatm
+      use chem, only : n, ng, nx, nameg, tempk, rgasjoule, pa_atm, rgasatm
       
       use bbls, only : gas_pair, gas_species
       

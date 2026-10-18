@@ -185,7 +185,7 @@
  
             if (namec(ibl).ne.'h2o') then
               dtotc(ibl,tid) = dtotc(ibl,tid)+factor(ir)*xnur(i1)*    &
-                               c(ir+nopu)
+                               c(ir+n)
             end if
           end do
         end do

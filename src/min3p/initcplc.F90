@@ -56,7 +56,7 @@
 !c           integer*4:
 !c           ----------
 !c           nm                 = number of minerals                  + -
-!c           nopu               = number of primary unknowns          + -
+!c           n                  = number of primary unknowns          + -
 !c           nr                 = number of redox couples             + -
 !c
 !c           logical:

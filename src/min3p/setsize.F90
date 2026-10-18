@@ -34,7 +34,7 @@
 !c chem.f:   integer*4:
 !c           ----------
 !c           nc                 = number of primary unknowns          + -
-!c           nopu               = number of primary unknowns          + -
+!c           n                  = number of primary unknowns          + -
 !c           nr                 = number of redox couples             + -
 !c
 !c           logical:
@@ -59,11 +59,9 @@
       if (redox_equil_s.and.nr.gt.0) then
         redox_equil = .true.
         n = nc-nr-1
-        nopu = n
       else
         redox_equil = .false.
         n = nc-1
-        nopu = n
       end if
 
       return

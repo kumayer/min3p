@@ -91,6 +91,7 @@
  
       use parm
       use gen
+      use chem, only : n
       use matrix_utility, only : remap_matrix_ja
 #ifdef PARDISO
       use solver_pardiso, only : ptrt

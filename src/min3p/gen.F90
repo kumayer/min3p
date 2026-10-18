@@ -1075,9 +1075,6 @@
 !                                (reactive transport)
 !           maxit_rt           = max. number of iterations
 !                                (reactive transport)
-!           n                  = number of components excluding h2o 
-!                                equals number of unknowns per 
-!                                control volume
 !
 !           logical:
 !           --------
@@ -1126,7 +1123,6 @@
       real (type_r8) :: srelrange_rt_max 
       real (type_r8) :: div_rt(5)
 
-      integer (type_i4) :: n
       integer (type_i4) :: iter_rt
       integer (type_i4) :: iter_rt_ant
       integer (type_i4) :: maxit_rt

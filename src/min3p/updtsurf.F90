@@ -58,7 +58,7 @@
 !c           nc                 = number of components excluding h2o  + -
 !c                                equals number of unknowns per
 !c                                control volume
-!c           nopu               = number of primary unknowns          + -
+!c           n                  = number of primary unknowns          + -
 !c           nsites             = number of surface sites             + -
 !c
 !c           logical:
@@ -177,7 +177,7 @@
 !cprovi Update if electrostic corrections are performed
 !cprovi-----------------------------------------------------------------------------
       if (elect_correction) then
-        i1 = nopu - nelect
+        i1 = n - nelect
         do ielect = 1,nelect            !loop over electrostatic terms
 !c  user specified underrelaxation
           if (under_relax_lc) then

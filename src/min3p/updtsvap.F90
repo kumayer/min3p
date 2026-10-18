@@ -87,7 +87,7 @@
 !c                                free species in secondary aqueous
 !c                                species
 !c           nc                 = number of components including h2o  + -
-!c           nopu               = number of primary unknowns          + -
+!c           n                  = number of primary unknowns          + -
 !c           nr                 = number of redox couples             + -
 !c           nx                 = number of secondary aqueous species + -
 !c
@@ -215,7 +215,7 @@
 
       if (redox_equil.and.nr.gt.0) then
         do ir=1,nr
-          ic = nopu+ir
+          ic = n+ir
           call secspec(c,c(ic),eqr(ir,tid),gammac,gammac(ic),xnur,    &
                        iarc,jarc,ir)
         end do
